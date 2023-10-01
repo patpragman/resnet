@@ -42,6 +42,10 @@ class CustomResNetClassifier(nn.Module):
         # remove the last layer - we don't want it to classify, that's for us to do
         self.resnet18 = nn.Sequential(*list(self.resnet18.children())[:-1])
 
+        self.flat_layer_1 = nn.Linear(512, 2048)
+        self.flat_layer_2 = nn.Linear(2048, 2048)
+        self.flat_layer_3 = nn.Linear(2048, 512)
+
         self.classifier = nn.Linear(512, number_of_classes)
 
     def forward(self, x):
@@ -50,6 +54,10 @@ class CustomResNetClassifier(nn.Module):
 
         # Flatten the features if needed (e.g., if you have spatial dimensions)
         features = features.view(features.size(0), -1)
+
+        features = self.flat_layer_1(features)
+        features = self.flat_layer_2(features)
+        features = self.flat_layer_3(features)
 
         # Apply the fully connected layer to get class logits
         logits = self.classifier(features)
@@ -93,7 +101,7 @@ def find_best_model():
     train_dataloader = DataLoader(training_dataset, batch_size=batch_size)
     test_dataloader = DataLoader(testing_dataset, batch_size=batch_size)
 
-    # Define loss function
+    # Define loss function we've used
     loss_fn = nn.CrossEntropyLoss()
 
     # optimzer parsing logic:

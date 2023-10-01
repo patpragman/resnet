@@ -1,5 +1,6 @@
-name: mlp-hyperparam-sweep
+name: ResNet18-Sweep
 method: bayes
+project: Resnet18
 metric:
   name: testing_loss
   goal: minimize
