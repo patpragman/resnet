@@ -42,9 +42,9 @@ class CustomResNetClassifier(nn.Module):
         # remove the last layer - we don't want it to classify, that's for us to do
         self.resnet18 = nn.Sequential(*list(self.resnet18.children())[:-1])
 
-        self.flat_layer_1 = nn.Linear(512, 2048)
-        self.flat_layer_2 = nn.Linear(2048, 2048)
-        self.flat_layer_3 = nn.Linear(2048, 512)
+        self.flat_layer_1 = nn.Linear(512, 512)
+        self.flat_layer_2 = nn.Linear(512, 512)
+        self.flat_layer_3 = nn.Linear(512, 512)
 
         self.classifier = nn.Linear(512, number_of_classes)
 
